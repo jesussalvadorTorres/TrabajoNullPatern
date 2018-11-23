@@ -9,6 +9,44 @@ package patern.object.modelo;
  *
  * @author Jesus Torres
  */
-public class RealProductos {
+public class RealProductos extends AbstractProducto{
     //ProductosExxistentes
+    public RealProductos(int idPro,String name,Double precio,String desc,String catego){
+    this.idProducto=idPro;
+    this.nombre=name;
+    this.precio=precio;
+    this.descripcion=desc;
+    this.categoria=catego;
+       }
+
+    @Override
+    public boolean isNil() {
+    return true;
+    }
+
+    @Override
+    public int getidProducto() {
+    return idProducto;
+    }
+
+    @Override
+    public String getNombre() {
+        return nombre;
+    }
+
+    @Override
+    public Double getPrecio() {
+        return precio;
+    }
+
+    @Override
+    public String getDescripcion() {
+    return descripcion;
+    }
+
+    @Override
+    public String getCategoria() {
+    return categoria;
+    }
+    
 }
