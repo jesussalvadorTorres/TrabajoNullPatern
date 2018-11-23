@@ -49,7 +49,7 @@ public class frmAgregar extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 3, 48)); // NOI18N
         jLabel3.setText("Bienvenido a la Tienda:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 52, 573, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 573, -1));
         getContentPane().add(txtID, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 168, 198, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
