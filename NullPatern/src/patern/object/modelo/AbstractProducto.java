@@ -10,15 +10,16 @@ package patern.object.modelo;
  * @author Jesus Torres
  */
 public abstract class AbstractProducto {
+    
   protected int idProducto;  
   protected String nombre;
-  protected Double precio;
+  protected double precio;
   protected String descripcion;
   protected String categoria;
   public abstract boolean isNil();
   public abstract int getidProducto();
   public abstract String getNombre();
-  public abstract Double getPrecio();
+  public abstract double getPrecio();
   public abstract String getDescripcion();
   public abstract String getCategoria();
 }
