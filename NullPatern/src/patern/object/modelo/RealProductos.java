@@ -10,8 +10,8 @@ package patern.object.modelo;
  * @author Jesus Torres
  */
 public class RealProductos extends AbstractProducto{
-    //ProductosExxistentes
-    public RealProductos(int idPro,String name,Double precio,String desc,String catego){
+   
+    public RealProductos(int idPro,String name,double precio,String desc,String catego){
     this.idProducto=idPro;
     this.nombre=name;
     this.precio=precio;
@@ -35,7 +35,7 @@ public class RealProductos extends AbstractProducto{
     }
 
     @Override
-    public Double getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
