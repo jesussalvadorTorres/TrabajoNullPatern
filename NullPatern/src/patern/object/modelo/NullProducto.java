@@ -9,6 +9,21 @@ package patern.object.modelo;
  *
  * @author Jesus Torres
  */
-public class NullProducto {
+public class NullProducto extends AbstractProducto {
+
+    @Override
+    public boolean isNil() {
+        return true;
+    }
+
+    @Override
+    public String getidProducto() {
+         return "No existe un registro Valido en la base de datos";
+    }
+
+    @Override
+    public String getNombre() {
+     return "No existe un registro Valido en la base de datos";
+    }
     //ProductosNulos
 }

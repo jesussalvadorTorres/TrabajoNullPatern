@@ -11,22 +11,19 @@ package patern.object.modelo;
  */
 public class RealProductos extends AbstractProducto{
    
-    public RealProductos(int idPro,String name,double precio,String desc,String catego){
+    public RealProductos(String idPro,String name){
     this.idProducto=idPro;
-    this.nombre=name;
-    this.precio=precio;
-    this.descripcion=desc;
-    this.categoria=catego;
-       }
-
-    @Override
-    public boolean isNil() {
-    return true;
+      this.nombre=name;  
     }
 
     @Override
-    public int getidProducto() {
-    return idProducto;
+    public boolean isNil() {
+            return true;
+    }
+
+    @Override
+    public String getidProducto() {
+        return idProducto;
     }
 
     @Override
@@ -34,19 +31,8 @@ public class RealProductos extends AbstractProducto{
         return nombre;
     }
 
-    @Override
-    public double getPrecio() {
-        return precio;
-    }
+   
 
-    @Override
-    public String getDescripcion() {
-    return descripcion;
-    }
 
-    @Override
-    public String getCategoria() {
-    return categoria;
-    }
     
 }
