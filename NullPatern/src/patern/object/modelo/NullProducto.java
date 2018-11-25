@@ -18,12 +18,12 @@ public class NullProducto extends AbstractProducto {
 
     @Override
     public String getidProducto() {
-         return "No existe un registro Valido en la base de datos";
+         return "No existe un registro Valido en la base de datos para ese ID";
     }
 
     @Override
     public String getNombre() {
-     return "No existe un registro Valido en la base de datos";
+     return "No existe un registro Valido en la base de datos para ese Nombre";
     }
     //ProductosNulos
 }
