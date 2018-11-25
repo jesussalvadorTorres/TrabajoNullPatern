@@ -38,7 +38,7 @@ public class operaciones {
         Conexion cone = new Conexion();
             Connection con = cone.obtenerConexion();
         ArrayList<dtoProductos> lista = new ArrayList<>();
-        String query = "SELECT * FROM productos ";
+        String query = "SELECT * FROM productos";
         try {
             
             PreparedStatement ps= con.prepareStatement(query);
@@ -58,33 +58,4 @@ public class operaciones {
         }
         return lista;
     }
-     
-      public Object busquedaNombreoId(int id, String nombre){
-        Conexion cone = new Conexion();
-        Connection con = cone.obtenerConexion();
-        ArrayList<dtoProductos> lista = new ArrayList<>();
-        String query = "SELECT * FROM productos WHERE id="+ id +" or nombre= "+ nombre +" ";
-        try {
-            
-            PreparedStatement ps= con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-            
-                
-                
-             dtoProductos producto = new dtoProductos();
-                producto.setIdProducto(rs.getInt(1));
-                producto.setNombre(rs.getString(2));
-               producto.setPrecio(rs.getDouble(3));
-                producto.setDescripcion(rs.getString(4));
-                producto.setCategoria(rs.getString(5));
-                lista.add(producto);
-           
-            }
-        }catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return lista;
-    }
-    
 }

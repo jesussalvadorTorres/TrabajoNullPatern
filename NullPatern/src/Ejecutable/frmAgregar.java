@@ -5,17 +5,26 @@
  */
 package Ejecutable;
 
+import Control.operaciones;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import patern.object.modelo.AbstractProducto;
+import patern.object.modelo.RealProductos;
+import patern.object.modelo.dtoProductos;
+
 /**
  *
  * @author Alumno
  */
 public class frmAgregar extends javax.swing.JFrame {
-
+    DefaultTableModel modelo = new DefaultTableModel();
     /**
      * Creates new form frmAgregar
      */
     public frmAgregar() {
         initComponents();
+        LlenarTabla();
     }
 
     /**
@@ -35,13 +44,13 @@ public class frmAgregar extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        txtDESCUENTO = new javax.swing.JTextField();
+        txtdescuento = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtCategoria = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Tabla = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -71,9 +80,9 @@ public class frmAgregar extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(51, 51, 255));
-        jLabel8.setText("Descuento:");
+        jLabel8.setText("Descripcion:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 284, -1, -1));
-        getContentPane().add(txtDESCUENTO, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 282, 198, -1));
+        getContentPane().add(txtdescuento, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 282, 198, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(51, 51, 255));
@@ -101,8 +110,9 @@ public class frmAgregar extends javax.swing.JFrame {
         });
         getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -112,7 +122,7 @@ public class frmAgregar extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(Tabla);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, -1, 200));
 
@@ -130,17 +140,62 @@ public class frmAgregar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+  frmBuscar b= new frmBuscar();
+  b.setVisible(true);
+  this.hide();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        // TODO add your handling code here:
+        limpiarTabla();
+        LlenarTabla();
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
+        dtoProductos pro= new dtoProductos();
+    pro.setIdProducto(Integer.parseInt(this.txtID.getText().trim()));
+    pro.setNombre(this.txtNombre.getText().trim());
+    pro.setPrecio(Double.parseDouble(this.txtPrecio.getText().trim()));
+    pro.setDescripcion(this.txtdescuento.getText().trim());
+    pro.setCategoria(this.txtCategoria.getText().trim());
+    
+    if(new operaciones ().insertar(pro)){
+        JOptionPane.showMessageDialog(null,"Se agrego correctamente");
+        
+    }else{
+        JOptionPane.showMessageDialog(null,"No se agrego correctmente");
+    }
+    
+    txtCategoria.setText("");
+    txtID.setText("");
+    txtNombre.setText("");
+    txtPrecio.setText("");
+    txtdescuento.setText("");
     }//GEN-LAST:event_btnAgregarActionPerformed
-
+  
+    public void LlenarTabla(){
+           Tabla.setModel(modelo);
+           modelo.setColumnIdentifiers(new String []{"IdProducto","Nombre","Precio","Descripcion","Categorio"});
+           operaciones op=new operaciones();
+           ArrayList<dtoProductos> lista = (ArrayList<dtoProductos>) (op.consultar());
+           
+           for(int i = 0; i<lista.size(); i++){
+               modelo.addRow(new Object [] {
+                   lista.get(i).getIdProducto(),
+                   lista.get(i).getNombre(),
+                   lista.get(i).getPrecio(),
+                   lista.get(i).getDescripcion(),
+                   lista.get(i).getCategoria()});
+               
+        }
+}
+    public void limpiarTabla(){
+        DefaultTableModel tb = (DefaultTableModel) Tabla.getModel();
+        int a = Tabla.getRowCount()-1;
+        for (int i = a; i >= 0; i--) {           
+        tb.removeRow(tb.getRowCount()-1);
+        } 
+        //cargaTicket();
+    }
     /**
      * @param args the command line arguments
      */
@@ -177,6 +232,7 @@ public class frmAgregar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Tabla;
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -187,11 +243,10 @@ public class frmAgregar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtCategoria;
-    private javax.swing.JTextField txtDESCUENTO;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtdescuento;
     // End of variables declaration//GEN-END:variables
 }

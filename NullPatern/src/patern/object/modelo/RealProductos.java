@@ -14,11 +14,11 @@ public class RealProductos extends AbstractProducto{
     public RealProductos(String idPro,String name){
     this.idProducto=idPro;
       this.nombre=name;  
-    }
+   }
 
     @Override
     public boolean isNil() {
-            return true;
+            return false;
     }
 
     @Override

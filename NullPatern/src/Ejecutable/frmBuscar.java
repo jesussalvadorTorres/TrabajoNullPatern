@@ -5,17 +5,31 @@
  */
 package Ejecutable;
 
+import Control.Conexion;
+import Control.operaciones;
+import java.beans.Statement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import patern.object.factory.ProductoFactory;
+import patern.object.modelo.NullProducto;
+import patern.object.modelo.dtoProductos;
+
 /**
  *
  * @author Alumno
  */
 public class frmBuscar extends javax.swing.JFrame {
-
+    DefaultTableModel modelo = new DefaultTableModel();
+    
     /**
      * Creates new form frmBuscar
      */
     public frmBuscar() {
         initComponents();
+        modelo.setColumnIdentifiers(new String []{"IdProducto","Nombre","Precio","Descripcion","Categorio"});
+        txtID.setText("0");;
     }
 
     /**
@@ -34,7 +48,7 @@ public class frmBuscar extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblbusqueda = new javax.swing.JTable();
+        Tabla = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,9 +62,15 @@ public class frmBuscar extends javax.swing.JFrame {
         jLabel4.setText("Nombre");
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
-        tblbusqueda.setModel(new javax.swing.table.DefaultTableModel(
+        Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -60,23 +80,30 @@ public class frmBuscar extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblbusqueda);
+        jScrollPane1.setViewportView(Tabla);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 472, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(131, 131, 131)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(138, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 10, Short.MAX_VALUE)
+                    .addGap(0, 124, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addGap(120, 120, 120)
                             .addComponent(jLabel1))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(80, 80, 80)
+                            .addGap(150, 150, 150)
                             .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -84,21 +111,23 @@ public class frmBuscar extends javax.swing.JFrame {
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(160, 160, 160)
-                            .addComponent(btnBuscar))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(0, 10, Short.MAX_VALUE)))
+                            .addComponent(btnBuscar)))
+                    .addGap(0, 197, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 480, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(109, 109, 109)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(90, 90, 90))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jLabel1)
                     .addGap(38, 38, 38)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3)
-                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(20, 20, 20)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -107,14 +136,46 @@ public class frmBuscar extends javax.swing.JFrame {
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGap(10, 10, 10)
                     .addComponent(btnBuscar)
-                    .addGap(17, 17, 17)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 237, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+           limpiarTabla();
+           Tabla.setModel(modelo);
+           
+           ProductoFactory po=new ProductoFactory();
+           int id = Integer.parseInt(txtID.getText());
+           String nombre = (txtNombre.getText());
+           ArrayList<dtoProductos> lista = (ArrayList<dtoProductos>) (po.busquedaNombreoId(id, nombre));
+           
+           if (lista.size()>=1) {
+            for(int i = 0; i<lista.size(); i++){
+               modelo.addRow(new Object [] {
+                   lista.get(i).getIdProducto(),
+                   lista.get(i).getNombre(),
+                   lista.get(i).getPrecio(),
+                   lista.get(i).getDescripcion(),
+                   lista.get(i).getCategoria()});
+        }
+           
+               
+        }else{
+              NullProducto n = new NullProducto();
+               JOptionPane.showMessageDialog(null,n.getidProducto());
+           }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+      public void limpiarTabla(){
+        DefaultTableModel tb = (DefaultTableModel) Tabla.getModel();
+        int a = Tabla.getRowCount()-1;
+        for (int i = a; i >= 0; i--) {           
+        tb.removeRow(tb.getRowCount()-1);
+        } 
+        //cargaTicket();
+    }
     /**
      * @param args the command line arguments
      */
@@ -151,12 +212,12 @@ public class frmBuscar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Tabla;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblbusqueda;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
