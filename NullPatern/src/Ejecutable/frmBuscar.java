@@ -6,24 +6,30 @@
 package Ejecutable;
 
 import Control.Conexion;
+import Control.operaciones;
 import java.beans.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import patern.object.factory.ProductoFactory;
+import patern.object.modelo.NullProducto;
+import patern.object.modelo.dtoProductos;
 
 /**
  *
  * @author Alumno
  */
 public class frmBuscar extends javax.swing.JFrame {
-    DefaultTableModel modelo;
-    Conexion con;
-    Statement sent;
+    DefaultTableModel modelo = new DefaultTableModel();
     
     /**
      * Creates new form frmBuscar
      */
     public frmBuscar() {
         initComponents();
+        modelo.setColumnIdentifiers(new String []{"IdProducto","Nombre","Precio","Descripcion","Categorio"});
+        txtID.setText("0");;
     }
 
     /**
@@ -137,34 +143,39 @@ public class frmBuscar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-}
-        public void BuscarPorIDoNombre(String texto){
-            try{ 
-                String [] titulos= {"IdProducto","Nombre","Precio","Descripcion","Ctegoria"};
-            
-                String MySQL="select * from productos where idProducto,nombre like"+'"'+texto+'"'+"_%";
-                modelo =new DefaultTableModel(null,titulos);
-               sent= con.prepareStatement(MySQL);
-                ResultSet re = sent.executeQuery(MySQL);
-                String [] fila = new String[5];
-                while (re.netx()){
-                    fila[0]=re.getString("IdProducto");
-                    fila[1]=re.getString("nombre");
-                    fila[2]=re.getString("precio");
-                    fila[3]=re.getString("descripcion");
-                    fila[4]=re.getString("categoria");
-                    modelo.addRow(fila);
-                }
-                Tabla.setModel(modelo);
-                re.close();
-                
-                }catch (Exception e){
-                    System.err.println(""+e.getMessage());
-            }
-        
-
+           limpiarTabla();
+           Tabla.setModel(modelo);
+           
+           ProductoFactory po=new ProductoFactory();
+           int id = Integer.parseInt(txtID.getText());
+           String nombre = (txtNombre.getText());
+           ArrayList<dtoProductos> lista = (ArrayList<dtoProductos>) (po.busquedaNombreoId(id, nombre));
+           
+           if (lista.size()>=1) {
+            for(int i = 0; i<lista.size(); i++){
+               modelo.addRow(new Object [] {
+                   lista.get(i).getIdProducto(),
+                   lista.get(i).getNombre(),
+                   lista.get(i).getPrecio(),
+                   lista.get(i).getDescripcion(),
+                   lista.get(i).getCategoria()});
+        }
+           
+               
+        }else{
+              NullProducto n = new NullProducto();
+               JOptionPane.showMessageDialog(null,n.getidProducto());
+           }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+      public void limpiarTabla(){
+        DefaultTableModel tb = (DefaultTableModel) Tabla.getModel();
+        int a = Tabla.getRowCount()-1;
+        for (int i = a; i >= 0; i--) {           
+        tb.removeRow(tb.getRowCount()-1);
+        } 
+        //cargaTicket();
+    }
     /**
      * @param args the command line arguments
      */

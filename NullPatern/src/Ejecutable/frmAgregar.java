@@ -24,6 +24,7 @@ public class frmAgregar extends javax.swing.JFrame {
      */
     public frmAgregar() {
         initComponents();
+        LlenarTabla();
     }
 
     /**
@@ -145,7 +146,8 @@ public class frmAgregar extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        
+        limpiarTabla();
+        LlenarTabla();
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -162,11 +164,17 @@ public class frmAgregar extends javax.swing.JFrame {
     }else{
         JOptionPane.showMessageDialog(null,"No se agrego correctmente");
     }
-    }
     
-        public void LlenarTabla(){
+    txtCategoria.setText("");
+    txtID.setText("");
+    txtNombre.setText("");
+    txtPrecio.setText("");
+    txtdescuento.setText("");
+    }//GEN-LAST:event_btnAgregarActionPerformed
+  
+    public void LlenarTabla(){
            Tabla.setModel(modelo);
-           modelo.setColumnIdentifiers(new String []{"IdProducto,Nombre,Precio,Descripcion,Categorio"});
+           modelo.setColumnIdentifiers(new String []{"IdProducto","Nombre","Precio","Descripcion","Categorio"});
            operaciones op=new operaciones();
            ArrayList<dtoProductos> lista = (ArrayList<dtoProductos>) (op.consultar());
            
@@ -179,8 +187,15 @@ public class frmAgregar extends javax.swing.JFrame {
                    lista.get(i).getCategoria()});
                
         }
-    }//GEN-LAST:event_btnAgregarActionPerformed
- 
+}
+    public void limpiarTabla(){
+        DefaultTableModel tb = (DefaultTableModel) Tabla.getModel();
+        int a = Tabla.getRowCount()-1;
+        for (int i = a; i >= 0; i--) {           
+        tb.removeRow(tb.getRowCount()-1);
+        } 
+        //cargaTicket();
+    }
     /**
      * @param args the command line arguments
      */
